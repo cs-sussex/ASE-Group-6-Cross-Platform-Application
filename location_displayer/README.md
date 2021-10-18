@@ -1,6 +1,6 @@
 # location_displayer
 
-Displays user location
+Displays user location. Tested and working on Android.
 
 ## Getting Started
 
