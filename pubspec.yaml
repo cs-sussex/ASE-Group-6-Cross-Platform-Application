@@ -38,9 +38,11 @@ dependencies:
 #  geocoding: ^2.0.1
 #  google_maps_flutter: ^0.5.30
 #  location: ^3.0.2
-  connectivity_plus: ^2.0.2
-  internet_connection_checker: ^0.0.1+1
-  connectivity: ^0.4.2
+#  connectivity_plus: ^2.0.2
+#  internet_connection_checker: ^0.0.1+1
+#  connectivity: ^0.4.2
+#  page_transition: ^1.1.5
+
 
   google_maps_flutter:
   geolocator: #latest version

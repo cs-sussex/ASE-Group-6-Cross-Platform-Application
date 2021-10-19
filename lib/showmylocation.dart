@@ -8,24 +8,49 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'util/ConnectionStatusSingleton.dart';
 
-void main() {
-  // ConnectionStatusSingleton connectionStatus =
-  //     ConnectionStatusSingleton.getInstance();
-  // connectionStatus.initialize();
+// void main() {
+//   // ConnectionStatusSingleton connectionStatus =
+//   //     ConnectionStatusSingleton.getInstance();
+//   // connectionStatus.initialize();
+//
+//   runApp(const ShowMyLocation());
+// }
 
-  runApp(const ShowMyLocation());
+
+class MyLocation extends StatelessWidget {
+  // static const routeName = '/PublisherDetailsState';
+  static const routeName = '/ShowMyLocation';
+
+  const MyLocation({Key? key}) : super(key: key);
+
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+
+    return const Scaffold(
+      body: ShowMyLocation(
+
+      ),
+    );
+  }
 }
-
 class ShowMyLocation extends StatefulWidget {
+
   const ShowMyLocation({Key? key}) : super(key: key);
 
   @override
   _ShowMyLocationState createState() => _ShowMyLocationState();
 }
+
+
+
+
+
 
 class _ShowMyLocationState extends State<ShowMyLocation> {
   //LatLng _center = const LatLng(45.521563, -122.677433);
@@ -91,8 +116,10 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
       //   :
       //
 
-      MaterialApp(
-            home: Scaffold(
+      // MaterialApp(
+      //       home:
+
+            Scaffold(
 
                 //appBar: AppBar(
                 //title: const Text('You Are Here:'),
@@ -254,8 +281,8 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
                             ),
                           ),
                         ],
-                      )),
-          );
+                      ));
+          //);
   }
 
   //Async method for retrieving user location
