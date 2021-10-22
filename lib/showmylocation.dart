@@ -53,7 +53,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   late bool refreshLocation = true;
   late int locationPermissionFlag = 0;
   late int extraFlag = 0;
-  Completer<GoogleMapController> _controller = Completer();
 
   /* locationPermissionFlag 1=Location permission granted
        locationPermissionFlag 2=nLocation permission denied
@@ -68,7 +67,7 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   final MyConnectivity _connectivity = MyConnectivity.instance;
 
   void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+    mapController = controller;
     // if (_markers.isNotEmpty) {
     //   controller.showMarkerInfoWindow(MarkerId('currentLocations'));
     // }
@@ -180,7 +179,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   void initState() {
     super.initState();
 
-
     _connectivity.initialise();
     _connectivity.myStream.listen((source) {
       setState(() => _source = source);
@@ -215,9 +213,8 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
       mapLoader = false;
     }
 
-    List<Placemark> currentPlace =
-    await GeocodingPlatform.instance.placemarkFromCoordinates(currentLocationPoint.latitude, currentLocationPoint.longitude,localeIdentifier: "en");
-
+    List<Placemark> currentPlace = await placemarkFromCoordinates(
+        currentLocationPoint.latitude, currentLocationPoint.longitude);
     Placemark place = currentPlace[0];
     currentLocationTextController.text = place.name.toString() +
         "," +
@@ -242,25 +239,18 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
       icon: BitmapDescriptor.defaultMarker,
     ));
 
-    setState(() {
-      currentLocationPoint;
-    });
-    if (locationServiceEnabled && currentLocationPoint.longitude!=0.0) {
+    if (locationServiceEnabled) {
       //if (flag==2) {
-      print("inside   BitmapDescriptorefsdg" +
+      print("inside   BitmapDescriptor" +
           currentLocationPoint.latitude.toString());
-     currentLocationPoint.longitude!=0.0?  _cameraPosition = CameraPosition(
+      _cameraPosition = CameraPosition(
           target: LatLng(
               currentLocationPoint.latitude, currentLocationPoint.longitude),
-          zoom: 13.0):currentLocationPoint;
-      if(currentLocationPoint.longitude!=0.0) {
-        final GoogleMapController mapController = await _controller.future;
-
-        mapController
-            .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
-      }
-      }
-
+          zoom: 13.0);
+      mapController
+          .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
+      // }
+    }
   }
 
   @override
@@ -312,9 +302,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
       });
       _fetchCurrentLocation();
     } else if (locationPermissionFlag == 2) {
-      setState(() {
-        mapLoader == false;
-      });
       _fetchCurrentLocation();
     }
 
@@ -343,11 +330,7 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
                 backgroundColor: Colors.blueGrey[700],
                 // ),
 
-                body:
-
-                //
-
-                mapLoader == true &&
+                body: mapLoader == true &&
                         currentLocationPoint == const LatLng(0.0, 0.0)
                     ? Center(
                         child: Column(
@@ -379,17 +362,11 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
                     // Display Progress Indicator
 
                     //)
-                //
-                    :
 
-
-
-                Stack(
+                    : Stack(
                         children: [
                           GoogleMap(
-                           onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-        },
+                            onMapCreated: _onMapCreated,
                             padding:
                                 const EdgeInsets.only(bottom: 100, left: 15),
                             // <--- padding added here
@@ -548,10 +525,7 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
                                           child: const Icon(
                                             Icons.zoom_in,
                                           ),
-                                          onPressed: () async{
-
-                                            final GoogleMapController mapController = await _controller.future;
-
+                                          onPressed: () {
                                             if (mapController != null) {
                                               _cameraPosition = CameraPosition(
                                                   target: LatLng(
