@@ -12,14 +12,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:flutter/foundation.dart';
 import 'util/ConnectionStatusSingleton.dart';
 
-// void main() {
-//   // ConnectionStatusSingleton connectionStatus =
-//   //     ConnectionStatusSingleton.getInstance();
-//   // connectionStatus.initialize();
-//
-//   runApp(const ShowMyLocation());
-// }
-
 
 class MyLocation extends StatelessWidget {
   // static const routeName = '/PublisherDetailsState';
@@ -53,7 +45,6 @@ class ShowMyLocation extends StatefulWidget {
 
 
 class _ShowMyLocationState extends State<ShowMyLocation> {
-  //LatLng _center = const LatLng(45.521563, -122.677433);
   late StreamSubscription _connectionChangeStream;
 
   bool isOffline = false;
@@ -71,8 +62,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
     mapController = controller;
   }
 
-  //late StreamSubscription _connectivitySubscription;
-
   MapType _currentMapType = MapType.normal;
 
   void connectionChanged(dynamic hasConnection) {
@@ -84,17 +73,12 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   @override
   void initState() {
     super.initState();
-    // ConnectionStatusSingleton connectionStatus =
-    //     ConnectionStatusSingleton.getInstance();
-    // _connectionChangeStream =
-    //     connectionStatus.connectionChange.listen(connectionChanged);
     _fetchCurrentLocation();
   }
 
   @override
   dispose() {
     super.dispose();
-    //_connectivitySubscription.cancel();
   }
 
   void changeMapType() {
@@ -109,22 +93,9 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   @override
   Widget build(BuildContext context) {
     return
-
-
-      // (isOffline)
-      //   ? const Text("Not connected to internet")
-      //   :
-      //
-
-      // MaterialApp(
-      //       home:
-
             Scaffold(
 
-                //appBar: AppBar(
-                //title: const Text('You Are Here:'),
                 backgroundColor: Colors.blueGrey[700],
-                // ),
                 body: mapLoader == true
                     ? Center(
                         child: Column(
@@ -323,7 +294,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     setState(() {
-      //_center =LatLng (position.latitude,position.longitude);
       mapLoader = false;
       print("finally");
     });
@@ -352,13 +322,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
 
     print(place.postalCode.toString());
 
-//custom marker
-//     bitmapIcon = await BitmapDescriptor.fromAssetImage(
-//         const ImageConfiguration(size: Size(48, 48)),
-//         'assets/images/marker.png');
-
-
-   // bitmapIcon = await BitmapDescriptor.
     _markers.add(Marker(
       markerId: const MarkerId("currentLocation"),
       draggable: true,
