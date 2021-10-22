@@ -5,6 +5,7 @@ import 'package:mylocation/showmylocation.dart';
 void main() {
   // TimeZone
 
+
   runApp(
       MaterialApp(
           initialRoute: '/ShowMyLocation' ,
@@ -15,17 +16,10 @@ void main() {
             switch (settings.name) {
               case '/ShowMyLocation':
                   return MaterialPageRoute(builder: (_) =>const ShowMyLocation());
-
                 break;
 
-
               default:
-                return MaterialPageRoute(
-                    builder: (_) =>
-                        Scaffold(
-                          body: Center(
-                              child: Text('No route defined for ${settings.name}')),
-                        ));
+                return MaterialPageRoute(builder: (_) =>const ShowMyLocation());
             }
 
           }
