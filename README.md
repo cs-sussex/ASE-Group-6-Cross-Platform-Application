@@ -1,7 +1,16 @@
-# Task 1: GPS-location
- Produce an Android or iPhone or cross-platform app that displays the phone's current GPS position on the phone. 
+# mylocation
 
-## Description: 
-> Produce an Android or iPhone or cross-platform app that displays the phone's current GPS position on the phone. The point of this task is for you to familiarise yourself with the Android/iOS or cross-platform frameworks like React Native or Flutter, and their development tools and APIs. There will be no lectures about the Android and/or iOS system. It's your responsibility to learn about it (don't worry, it's easy). Note that I've left many things vague in this specification, like what format to use for display, how often should it be updated? What should happen if GPS isn't switched on, or GPS data not available? The options include printing out GPS coordinates, displaying the position on Google Maps, or on Open Streetmap, or anything else.
+A new Flutter application.
 
-> Given the abilities of Google's Android and/or iOS SDK, this is a fairly easy task. If you have done Android and/or iOS development before, maybe leave this task you team members that have not done Android and/or iPhone before, and mentor them. That's good leadership and good software engineering practise.
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
