@@ -12,37 +12,27 @@ import 'package:geocoding/geocoding.dart';
 import 'package:flutter/foundation.dart';
 import 'util/ConnectionStatusSingleton.dart';
 
-
 class MyLocation extends StatelessWidget {
   // static const routeName = '/PublisherDetailsState';
   static const routeName = '/ShowMyLocation';
 
   const MyLocation({Key? key}) : super(key: key);
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return const Scaffold(
-      body: ShowMyLocation(
-
-      ),
+      body: ShowMyLocation(),
     );
   }
 }
-class ShowMyLocation extends StatefulWidget {
 
+class ShowMyLocation extends StatefulWidget {
   const ShowMyLocation({Key? key}) : super(key: key);
 
   @override
   _ShowMyLocationState createState() => _ShowMyLocationState();
 }
-
-
-
-
-
 
 class _ShowMyLocationState extends State<ShowMyLocation> {
   late StreamSubscription _connectionChangeStream;
@@ -89,171 +79,185 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
     });
   }
 
+  void savelocation() {
+    setState(() {
+      _currentMapType = (_currentMapType == MapType.normal)
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return
-            Scaffold(
+    return Scaffold(
+        backgroundColor: Colors.blueGrey[700],
+        body: mapLoader == true
+            ? Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(
+                    width: 90,
+                    height: 90,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.blueGrey,
+                      strokeWidth: 20,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(15.0),
+                      child: const Text(
+                        "Fetching your current location...",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      )),
+                ],
+              ))
+            // Display Progress Indicator
 
-                backgroundColor: Colors.blueGrey[700],
-                body: mapLoader == true
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.blueGrey,
-                                strokeWidth: 20,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            Container(
-                                padding: const EdgeInsets.all(15.0),
-                                child: const Text(
-                                  "Fetching your current location...",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                )),
-                          ],
-                        ))
-                    // Display Progress Indicator
+            //)
+            : Stack(
+                children: [
+                  GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    padding: const EdgeInsets.only(bottom: 100, left: 15),
+                    // <--- padding added here
 
-                    //)
-                    : Stack(
-                        children: [
-                          GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            padding:
-                                const EdgeInsets.only(bottom: 100, left: 15),
-                            // <--- padding added here
+                    indoorViewEnabled: true,
+                    myLocationButtonEnabled: false,
 
-                            indoorViewEnabled: true,
-                            myLocationButtonEnabled: false,
+                    zoomGesturesEnabled: true,
 
-                            zoomGesturesEnabled: true,
+                    mapType: _currentMapType,
+                    mapToolbarEnabled: true,
 
-                            mapType: _currentMapType,
-                            mapToolbarEnabled: true,
+                    zoomControlsEnabled: true,
+                    markers: _markers,
 
-                            zoomControlsEnabled: true,
-                            markers: _markers,
+                    onCameraMove: (position) {
+                      setState(() {});
+                    },
 
-                            onCameraMove: (position) {
-                              setState(() {});
-                            },
+                    initialCameraPosition: CameraPosition(
+                      target: _center,
+                      zoom: 13.00,
+                    ),
+                  ),
+                  mapLoader == true
+                      ? Container()
+                      : Positioned(
+                          bottom: 10.0,
+                          right: 10.0,
+                          child: Row(
+                            children: [
+                              // save location button
+                              Container(
+                                //height: 50,
+                                padding: const EdgeInsets.all(5.0),
+                                color: Colors.transparent,
 
-                            initialCameraPosition: CameraPosition(
-                              target: _center,
-                              zoom: 13.00,
-                            ),
-                          ),
-                          mapLoader == true
-                              ? Container()
-                              : Positioned(
-                                  bottom: 10.0,
-                                  right: 10.0,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        //height: 50,
-                                        padding: const EdgeInsets.all(5.0),
-                                        color: Colors.transparent,
-
-                                        child: FloatingActionButton(
-                                          backgroundColor: Colors.blueGrey,
-                                          child: const Icon(Icons.map_rounded),
-                                          onPressed: changeMapType,
-                                          heroTag: null,
-                                        ),
-                                        alignment: Alignment.bottomRight,
-                                      ),
-                                      Container(
-                                        //height: 50,
-                                        padding: const EdgeInsets.all(10.0),
-                                        color: Colors.transparent,
-
-                                        child: FloatingActionButton(
-                                          backgroundColor: Colors.blueGrey,
-                                          child: const Icon(
-                                            Icons.zoom_in,
-                                          ),
-                                          onPressed: () {
-                                            if (mapController != null) {
-                                              _cameraPosition = CameraPosition(
-                                                  target: LatLng(
-                                                      _center.latitude,
-                                                      _center.longitude),
-                                                  zoom: 13.0);
-                                              mapController.animateCamera(
-                                                  CameraUpdate
-                                                      .newCameraPosition(
-                                                          _cameraPosition));
-                                            }
-                                          },
-                                          heroTag: null,
-                                        ),
-                                        alignment: Alignment.bottomRight,
-                                      ),
-                                    ],
-                                  ),
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.blueGrey,
+                                  child: const Icon(Icons.save_rounded),
+                                  onPressed: changeMapType,
+                                  heroTag: null,
                                 ),
-                          Positioned(
-                            top: 15.0,
-                            right: 15.0,
-                            left: 15.0,
-                            child: Container(
-                              //height:double.infinity,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3.0),
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(1.0, 5.0),
-                                      blurRadius: 10,
-                                      spreadRadius: 3)
-                                ],
+                                alignment: Alignment.bottomRight,
                               ),
-                              child: TextField(
-                                enabled: false,
+                              Container(
+                                //height: 50,
+                                padding: const EdgeInsets.all(5.0),
+                                color: Colors.transparent,
 
-                                cursorColor: Colors.black,
-                                controller: currentLocationTextController,
-                                autofocus: false,
-                                maxLines: null,
-                                //style: const TextStyle(fontSize: 0.5),
-                                decoration: InputDecoration(
-                                  icon: Container(
-                                    margin:
-                                        const EdgeInsets.only(left: 20, top: 0),
-                                    width: 10,
-                                    height: 10,
-                                    child: const Icon(
-                                      Icons.location_on,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                  hintText: "Fetching your location...",
-                                  labelText: "Your current location",
-                                  border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.fromLTRB(
-                                      15.0, 15.0, 15.0, 15.0),
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.blueGrey,
+                                  child: const Icon(Icons.map_rounded),
+                                  onPressed: changeMapType,
+                                  heroTag: null,
                                 ),
+                                alignment: Alignment.bottomRight,
                               ),
-                            ),
+                              Container(
+                                //height: 50,
+                                padding: const EdgeInsets.all(10.0),
+                                color: Colors.transparent,
+
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.blueGrey,
+                                  child: const Icon(
+                                    Icons.zoom_in,
+                                  ),
+                                  onPressed: () {
+                                    if (mapController != null) {
+                                      _cameraPosition = CameraPosition(
+                                          target: LatLng(_center.latitude,
+                                              _center.longitude),
+                                          zoom: 13.0);
+                                      mapController.animateCamera(
+                                          CameraUpdate.newCameraPosition(
+                                              _cameraPosition));
+                                    }
+                                  },
+                                  heroTag: null,
+                                ),
+                                alignment: Alignment.bottomRight,
+                              ),
+                            ],
                           ),
+                        ),
+                  Positioned(
+                    top: 15.0,
+                    right: 15.0,
+                    left: 15.0,
+                    child: Container(
+                      //height:double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3.0),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1.0, 5.0),
+                              blurRadius: 10,
+                              spreadRadius: 3)
                         ],
-                      ));
-          //);
+                      ),
+                      child: TextField(
+                        enabled: false,
+
+                        cursorColor: Colors.black,
+                        controller: currentLocationTextController,
+                        autofocus: false,
+                        maxLines: null,
+                        //style: const TextStyle(fontSize: 0.5),
+                        decoration: InputDecoration(
+                          icon: Container(
+                            margin: const EdgeInsets.only(left: 20, top: 0),
+                            width: 10,
+                            height: 10,
+                            child: const Icon(
+                              Icons.location_on,
+                              color: Colors.green,
+                            ),
+                          ),
+                          hintText: "Fetching your location...",
+                          labelText: "Your current location",
+                          border: InputBorder.none,
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ));
+    //);
   }
 
   //Async method for retrieving user location
@@ -325,17 +329,13 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
     _markers.add(Marker(
       markerId: const MarkerId("currentLocation"),
       draggable: true,
-
       visible: true,
-
       position: _center,
       icon: BitmapDescriptor.defaultMarker,
-
     ));
 
-
     setState(() {
-      if(mapLoader &&  mapController!=null) {
+      if (mapLoader && mapController != null) {
         print("inside" + position.latitude.toString());
         _cameraPosition = CameraPosition(
             target: LatLng(position.latitude, position.longitude), zoom: 13.0);
@@ -343,7 +343,6 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
             .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
       }
     });
-
 
     return position;
   }
