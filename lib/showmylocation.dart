@@ -53,13 +53,13 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   late bool refreshLocation = true;
   late int locationPermissionFlag = 0;
   late int extraFlag = 0;
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
   /* locationPermissionFlag 1=Location permission granted
        locationPermissionFlag 2=nLocation permission denied
       */
 
-  late ConnectivityResult internetConnectivityResult;
+  //late ConnectivityResult internetConnectivityResult;
   late LocationPermission permission;
   late String loaderString;
   MapType _currentMapType = MapType.normal;
@@ -253,8 +253,9 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
           target: LatLng(
               currentLocationPoint.latitude, currentLocationPoint.longitude),
           zoom: 13.0):currentLocationPoint;
+      final GoogleMapController mapController = await _controller.future;
+
       if(currentLocationPoint.longitude!=0.0) {
-        final GoogleMapController mapController = await _controller.future;
 
         mapController
             .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
@@ -421,34 +422,34 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
               so below condition  will show loader until location latitude is not updated to current location
          */
 
-                          if (currentLocationPoint.longitude == 0.0)
-                            Center(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const SizedBox(
-                                  width: 90,
-                                  height: 90,
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.blueGrey,
-                                    strokeWidth: 20,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 3,
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: const Text(
-                                      "Fetching your current location..",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    )),
-                              ],
-                            )),
+                          // if (currentLocationPoint.longitude == 0.0)
+                          //   Center(
+                          //       child: Column(
+                          //     mainAxisAlignment: MainAxisAlignment.center,
+                          //     children: [
+                          //       const SizedBox(
+                          //         height: 10,
+                          //       ),
+                          //       const SizedBox(
+                          //         width: 90,
+                          //         height: 90,
+                          //         child: CircularProgressIndicator(
+                          //           backgroundColor: Colors.blueGrey,
+                          //           strokeWidth: 20,
+                          //         ),
+                          //       ),
+                          //       const SizedBox(
+                          //         height: 3,
+                          //       ),
+                          //       Container(
+                          //           padding: const EdgeInsets.all(15.0),
+                          //           child: const Text(
+                          //             "Fetching your current location..",
+                          //             style: TextStyle(
+                          //                 fontSize: 20, color: Colors.white),
+                          //           )),
+                          //     ],
+                          //   )),
                           mapLoader != true &&
                                   currentLocationPoint.longitude == 0.0
                               ? Container()
