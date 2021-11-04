@@ -527,9 +527,7 @@ class _RegistrationScreenState extends State<RegistrationScreenStates> {
                                               ],
                                             ),
                                           )),
-                                        ]
-
-                                        ))),
+                                        ]))),
 
                             //
                           ])

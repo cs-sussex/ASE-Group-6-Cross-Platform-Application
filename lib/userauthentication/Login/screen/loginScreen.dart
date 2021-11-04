@@ -1,3 +1,7 @@
+// ignore: file_names
+// ignore: file_names
+
+// ignore: file_names
 // ignore_for_file: avoid_print
 
 /*
@@ -55,6 +59,7 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
     setState(() {
       _obscured = !_obscured;
       if (textFieldFocusNode.hasPrimaryFocus)
+        // ignore: curly_braces_in_flow_control_structures
         return; // If focus is on text field, dont unfocus
       textFieldFocusNode.canRequestFocus =
           false; // Prevents focus if tap on eye
@@ -97,8 +102,7 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
         ),
         Container(
             padding: const EdgeInsets.all(15.0),
-            child: GestureDetector(onTap: () {
-            })),
+            child: GestureDetector(onTap: () {})),
       ],
     ));
   }
@@ -108,6 +112,7 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
 
   Future signInUser(LoginPOJO loginPOJO) async {
     restApiClient.loginUser(loginPOJO).then((LoginPOJO responses) async {
+      print("response is ${responses.toString()}");
       if (responses.toJson().isNotEmpty) {
         loginPOJO = responses;
         UserAuthSharedPreferences.instance
@@ -322,8 +327,8 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
                                                     ),
                                                   )),
                                                   onPressed: () async {
-                                                    String token = "";
-
+                                                    String? token = "";
+                                                    String? userID = "";
                                                     if (isInternetOffline ==
                                                         false) {
                                                       UserAuthFailedDialogBox(
@@ -353,8 +358,8 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
                                                           passwordController
                                                               .text
                                                               .trim(),
-                                                          "",
-                                                          "");
+                                                          token,
+                                                          userID);
 
                                                       signInUser(loginPOJO)
                                                           .then((value) {
@@ -413,7 +418,7 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
                                                           const EdgeInsets.all(
                                                               10.0),
                                                       child: const Text(
-                                                        "New user?  Click here",
+                                                        "New user ?  Click here",
                                                         textScaleFactor: 1.1,
                                                         style: TextStyle(
                                                             color:
@@ -423,9 +428,7 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
                                               ],
                                             ),
                                           )),
-                                        ]
-
-                                        ))),
+                                        ]))),
 
                             //
                           ])
