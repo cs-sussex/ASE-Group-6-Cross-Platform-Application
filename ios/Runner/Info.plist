@@ -4,8 +4,23 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+<<<<<<< HEAD
 	 <key>NSLocationWhenInUseUsageDescription</key>
      <string>This app needs access to location when open.</string>
+=======
+	 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+     <string>This app needs access to location.</string>
+     <key>NSLocationAlwaysUsageDescription</key>
+     <string>This app needs access to location.</string>
+     <key>NSLocationWhenInUseUsageDescription</key>
+     <string>This app needs access to location.</string>
+     
+     <key>UIBackgroundModes</key>
+     <array>
+     	<string>fetch</string>
+     	<string>location</string>
+     </array>
+>>>>>>> feature/authentication
 
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -14,7 +29,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+<<<<<<< HEAD
 	<string>mylocation</string>
+=======
+	<string>MyLocation</string>
+>>>>>>> feature/authentication
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

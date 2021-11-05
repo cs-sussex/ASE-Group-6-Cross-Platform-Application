@@ -24,3 +24,33 @@ Use flutter doctor to check if your settings are complete and up to date.
 To run the flutter application on emulator 
 
 `flutter run`
+
+Add this to your additional arguments:
+
+```
+--no-sound-null-safety
+```
+
+If using vscode. 
+I. run `flutter run --no-sound-null-safety`
+II. create .vscode/launch.json in project root and add
+
+```
+"args": [
+     "--no-sound-null-safety"
+    ]
+complete code :-
+
+    "version": "0.2.0",
+    "configurations": [
+            {
+                    "name": "YOUR_PROJECT_NAME",
+                    "program": "lib/main.dart",
+                    "request": "launch",
+                    "type": "dart",
+                    "args": [
+                            "--no-sound-null-safety"
+                        ]
+            }
+    ]
+```
