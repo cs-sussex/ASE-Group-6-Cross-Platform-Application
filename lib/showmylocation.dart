@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_if_null_operators, avoid_print, unnecessary_null_comparison
 
 import 'dart:async';
@@ -10,14 +11,24 @@ import 'package:geocoding/geocoding.dart';
 // ignore: import_of_legacy_library_into_null_safe
 // import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
-import 'util/ConnectionStatusSingleton.dart';
+import 'package:mylocation/location/UserSavedLocationList/screen/ListOfUserLocationsScreen.dart';
+import 'package:mylocation/location/saveuserlocation/UserLocationPOJO.dart';
+import 'package:mylocation/usersettings/SettingsScreen.dart';
+import 'package:mylocation/util/appconstants/AppConstants.dart';
 
+import 'package:dio/dio.dart';
+import 'package:mylocation/util/localstorage/UserAuthSharedPreferences.dart';
 
+import 'network/RestClient.dart';
+
+var dio = Dio()..options.baseUrl = AppConstants.BASE_URL;
+RestClient restApiClient = RestClient(dio);
+AppConstants appConstants = AppConstants();
 class MyLocation extends StatelessWidget {
-  // static const routeName = '/PublisherDetailsState';
   static const routeName = '/ShowMyLocation';
 
-  const MyLocation({Key? key}) : super(key: key);
+  MyLocation({Key? key}) : super(key: key);
+
 
 
   // This widget is the root of your application.
@@ -70,16 +81,80 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
     });
   }
 
+
+
+  String token = "";
+  String userId = "";
+
+
+  getToken() async {
+    await UserAuthSharedPreferences.instance
+        .getStringValue("token")
+        .then((value) {
+      token = value;
+    });
+  }
+
+
+
+  getUserId() async {
+    await UserAuthSharedPreferences.instance
+        .getStringValue("id")
+        .then((value) {
+      userId = value;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _fetchCurrentLocation();
+
+    getToken().whenComplete(() {
+      setState(() {});
+    });
+
+    getUserId().whenComplete(() {
+      setState(() {});
+    });
   }
+
+
+
+
+
+
 
   @override
   dispose() {
     super.dispose();
   }
+
+
+
+ late UserLocationPOJO userLocationPOJO;
+
+  Future saveUserLocation(UserLocationPOJO userLocationPOJO) async {
+    restApiClient.addUserLocation("Bearer " + token,userLocationPOJO).then((UserLocationPOJO responses) async {
+      if (responses
+          .toJson()
+          .isNotEmpty) {
+
+        print(responses.toJson().toString());
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) =>  const ListOfUserLocationStates()));
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
 
   void changeMapType() {
     setState(() {
@@ -93,167 +168,231 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
   @override
   Widget build(BuildContext context) {
     return
-            Scaffold(
+      Scaffold(
 
-                backgroundColor: Colors.blueGrey[700],
-                body: mapLoader == true
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.blueGrey,
-                                strokeWidth: 20,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            Container(
-                                padding: const EdgeInsets.all(15.0),
-                                child: const Text(
-                                  "Fetching your current location...",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                )),
-                          ],
-                        ))
-                    // Display Progress Indicator
+          backgroundColor: Colors.blueGrey[700],
+          body: mapLoader == true
+              ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(
+                    width: 90,
+                    height: 90,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.blueGrey,
+                      strokeWidth: 20,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(15.0),
+                      child: const Text(
+                        "Fetching your current location...",
+                        style: TextStyle(
+                            fontSize: 20, color: Colors.white),
+                      )),
+                ],
+              ))
+          // Display Progress Indicator
 
-                    //)
-                    : Stack(
-                        children: [
-                          GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            padding:
-                                const EdgeInsets.only(bottom: 100, left: 15),
-                            // <--- padding added here
+          //)
+              : Stack(
+            children: [
+              GoogleMap(
+                onMapCreated: _onMapCreated,
+                padding:
+                const EdgeInsets.only(bottom: 100, left: 15),
+                // <--- padding added here
 
-                            indoorViewEnabled: true,
-                            myLocationButtonEnabled: false,
+                indoorViewEnabled: true,
+                myLocationButtonEnabled: false,
 
-                            zoomGesturesEnabled: true,
+                zoomGesturesEnabled: true,
 
-                            mapType: _currentMapType,
-                            mapToolbarEnabled: true,
+                mapType: _currentMapType,
+                mapToolbarEnabled: true,
 
-                            zoomControlsEnabled: true,
-                            markers: _markers,
+                zoomControlsEnabled: true,
+                markers: _markers,
 
-                            onCameraMove: (position) {
-                              setState(() {});
-                            },
+                onCameraMove: (position) {
+                  setState(() {});
+                },
 
-                            initialCameraPosition: CameraPosition(
-                              target: _center,
-                              zoom: 13.00,
-                            ),
-                          ),
-                          mapLoader == true
-                              ? Container()
-                              : Positioned(
-                                  bottom: 10.0,
-                                  right: 10.0,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        //height: 50,
-                                        padding: const EdgeInsets.all(5.0),
-                                        color: Colors.transparent,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 13.00,
+                ),
+              ),
+              mapLoader == true
+                  ? Container()
+                  : Positioned(
+                bottom: 10.0,
+                right: 10.0,
+                child: Row(
+                  children: [
+                    Container(
+                      //height: 50,
+                      padding: const EdgeInsets.all(5.0),
+                      color: Colors.transparent,
 
-                                        child: FloatingActionButton(
-                                          backgroundColor: Colors.blueGrey,
-                                          child: const Icon(Icons.map_rounded),
-                                          onPressed: changeMapType,
-                                          heroTag: null,
-                                        ),
-                                        alignment: Alignment.bottomRight,
-                                      ),
-                                      Container(
-                                        //height: 50,
-                                        padding: const EdgeInsets.all(10.0),
-                                        color: Colors.transparent,
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.blueGrey,
+                        child: const Icon(Icons.map_rounded),
+                        onPressed: changeMapType,
+                        heroTag: null,
+                      ),
+                      alignment: Alignment.bottomRight,
+                    ),
 
-                                        child: FloatingActionButton(
-                                          backgroundColor: Colors.blueGrey,
-                                          child: const Icon(
-                                            Icons.zoom_in,
-                                          ),
-                                          onPressed: () {
-                                            if (mapController != null) {
-                                              _cameraPosition = CameraPosition(
-                                                  target: LatLng(
-                                                      _center.latitude,
-                                                      _center.longitude),
-                                                  zoom: 13.0);
-                                              mapController.animateCamera(
-                                                  CameraUpdate
-                                                      .newCameraPosition(
-                                                          _cameraPosition));
-                                            }
-                                          },
-                                          heroTag: null,
-                                        ),
-                                        alignment: Alignment.bottomRight,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                          Positioned(
-                            top: 15.0,
-                            right: 15.0,
-                            left: 15.0,
-                            child: Container(
-                              //height:double.infinity,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3.0),
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(1.0, 5.0),
-                                      blurRadius: 10,
-                                      spreadRadius: 3)
-                                ],
-                              ),
-                              child: TextField(
-                                enabled: false,
 
-                                cursorColor: Colors.black,
-                                controller: currentLocationTextController,
-                                autofocus: false,
-                                maxLines: null,
-                                //style: const TextStyle(fontSize: 0.5),
-                                decoration: InputDecoration(
-                                  icon: Container(
-                                    margin:
-                                        const EdgeInsets.only(left: 20, top: 0),
-                                    width: 10,
-                                    height: 10,
-                                    child: const Icon(
-                                      Icons.location_on,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                  hintText: "Fetching your location...",
-                                  labelText: "Your current location",
-                                  border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.fromLTRB(
-                                      15.0, 15.0, 15.0, 15.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ));
-          //);
+
+                    Container(
+                      //height: 50,
+                      padding: const EdgeInsets.all(5.0),
+                      color: Colors.transparent,
+
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.blueGrey,
+                        child: const Icon(Icons.settings),
+                        onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(
+
+                              builder: (_) => const SettingsScreen()));
+                        },
+                        heroTag: null,
+                      ),
+                      alignment: Alignment.bottomRight,
+                    ),
+
+
+
+
+
+                    Container(
+                      //height: 50,
+                      padding: const EdgeInsets.all(5.0),
+                      color: Colors.transparent,
+
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.blueGrey,
+                        child: const Icon(Icons.save),
+                        onPressed: ()
+                       async {
+
+
+
+                          List<Placemark> currentPlace =
+                              await placemarkFromCoordinates(position.latitude, position.longitude);
+                          Placemark place = currentPlace[0];
+
+                          UserLocationPOJO userLocation=UserLocationPOJO(userId, place.name.toString(),
+                              position.latitude, position.longitude, "");
+                          print("jsON data" +userLocation.toJson().toString());
+                          token.isNotEmpty && userId.isNotEmpty? saveUserLocation(userLocation):getToken();
+                        },
+                        heroTag: null,
+                      ),
+                      alignment: Alignment.bottomRight,
+                    ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Container(
+                      //height: 50,
+                      padding: const EdgeInsets.all(10.0),
+                      color: Colors.transparent,
+
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.blueGrey,
+                        child: const Icon(
+                          Icons.zoom_in,
+                        ),
+                        onPressed: () {
+                          if (mapController != null) {
+                            _cameraPosition = CameraPosition(
+                                target: LatLng(
+                                    _center.latitude,
+                                    _center.longitude),
+                                zoom: 13.0);
+                            mapController.animateCamera(
+                                CameraUpdate
+                                    .newCameraPosition(
+                                    _cameraPosition));
+                          }
+                        },
+                        heroTag: null,
+                      ),
+                      alignment: Alignment.bottomRight,
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 15.0,
+                right: 15.0,
+                left: 15.0,
+                child: Container(
+                  //height:double.infinity,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3.0),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(1.0, 5.0),
+                          blurRadius: 10,
+                          spreadRadius: 3)
+                    ],
+                  ),
+                  child: TextField(
+                    enabled: false,
+
+                    cursorColor: Colors.black,
+                    controller: currentLocationTextController,
+                    autofocus: false,
+                    maxLines: null,
+                    //style: const TextStyle(fontSize: 0.5),
+                    decoration: InputDecoration(
+                      icon: Container(
+                        margin:
+                        const EdgeInsets.only(left: 20, top: 0),
+                        width: 10,
+                        height: 10,
+                        child: const Icon(
+                          Icons.location_on,
+                          color: Colors.green,
+                        ),
+                      ),
+                      hintText: "Fetching your location...",
+                      labelText: "Your current location",
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.fromLTRB(
+                          15.0, 15.0, 15.0, 15.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ));
+    //);
   }
 
   //Async method for retrieving user location
@@ -310,7 +449,7 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
         'assets/images/marker.png');
 
     List<Placemark> currentPlace =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+    await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = currentPlace[0];
     currentLocationTextController.text = place.name.toString() +
         "," +
