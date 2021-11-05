@@ -104,6 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreenStates> {
         UserAuthSharedPreferences.instance.setStringValue("id", responses.id);
         UserAuthSharedPreferences.instance
             .setStringValue("email", responses.email);
+        print("REsponse" +responses.toJson().toString());
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => const LoginScreenStates()));
       }

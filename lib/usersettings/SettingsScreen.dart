@@ -1,12 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mylocation/location/model/GetAllLocationPOJO.dart';
+import 'package:mylocation/location/model/LocationScreen/AllLocationScreen.dart';
+import 'package:mylocation/network/RestClient.dart';
 import 'package:mylocation/util/appconstants/AppConstants.dart';
 import 'package:mylocation/util/localstorage/UserAuthSharedPreferences.dart';
 import 'package:mylocation/util/ui/sizeConfig.dart';
-
+import 'package:dio/dio.dart' ;
 import '../userauthentication/Login/screen/loginScreen.dart';
 
 const String routeName = "SettingsScreen";
-
+var dio = Dio()..options.baseUrl = AppConstants.BASE_URL;
+RestClient restApiClient = RestClient(dio);
+AppConstants appConstants = AppConstants();
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -19,8 +28,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool notificationsEnabled = true;
   late String userName = "";
 
+
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
@@ -69,10 +92,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             //UserAuthSharedPreferences.instance.removeValue("email");
                             UserAuthSharedPreferences.instance
                                 .setBoolValue("login", false);
-                            UserAuthSharedPreferences.instance.removeAll();
+                          //  UserAuthSharedPreferences.instance.removeAll();
 
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const LoginScreenStates()));
+                                builder: (_) => const AllLocationsState()));
                           },
                           child: Ink(
                             decoration: const BoxDecoration(),
@@ -89,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   )))
         ]));

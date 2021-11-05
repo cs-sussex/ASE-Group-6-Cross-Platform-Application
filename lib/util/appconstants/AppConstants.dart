@@ -18,6 +18,7 @@ class AppConstants {
   static const String BASE_URL = "http://3.9.171.61:8080/";
   static const String Sign_Up = "/auth/signup";
   static const String Sign_In= "/auth/signin";
+  static const String GET_ALL_LOCATION="/location/all/";
 
 
 }

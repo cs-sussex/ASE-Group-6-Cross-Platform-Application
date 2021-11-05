@@ -108,6 +108,7 @@ class _LoginScreenStatesState extends State<LoginScreenStates> {
 
   Future signInUser(LoginPOJO loginPOJO) async {
     restApiClient.loginUser(loginPOJO).then((LoginPOJO responses) async {
+
       if (responses.toJson().isNotEmpty) {
         loginPOJO = responses;
         UserAuthSharedPreferences.instance

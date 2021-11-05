@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mylocation/location/model/LocationScreen/AllLocationScreen.dart';
 import 'package:mylocation/userauthentication/Login/screen/loginScreen.dart';
 import 'package:mylocation/userauthentication/registration/screen/registrationScreen.dart';
 import 'package:mylocation/usersettings/SettingsScreen.dart';
@@ -59,7 +60,8 @@ Future<void> main() async {
       routes: <String, WidgetBuilder>{
      'LoginScreenStates': (context) =>loginFlag==true? const SettingsScreen(): const LoginScreenStates(),
     'SettingsScreen':(context)=> loginFlag==true? const SettingsScreen(): const LoginScreenStates(),
-     'RegistrationScreen':(context)=>RegistrationScreen(),
+     'RegistrationScreen':(context)=>const RegistrationScreen(),
+        "AllLocationsState":(context) =>const AllLocationsState()
   }
       ));
 
