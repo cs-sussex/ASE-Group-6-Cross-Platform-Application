@@ -188,7 +188,7 @@ class _AllLocationsState extends State<ListOfUserLocationStates> {
 
 
                                             DeleteLocationdDialogBox(context, getAllLocationPOJO[index].id,
-                                                "Are yu sure want to delete this location");
+                                                "Are you sure want to delete this location");
 
 
 

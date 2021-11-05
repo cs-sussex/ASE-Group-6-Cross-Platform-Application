@@ -209,7 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 minWidth: SizeConfig.widthMultiplier * 96,
                               ),
                               child: const Text(
-                                'Save my Location',
+                                'Show map',
                                 textAlign: TextAlign.center,
                                 textScaleFactor: 1.0,
                               ),
