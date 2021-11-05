@@ -17,4 +17,5 @@ class AppConstants {
   static const String Sign_Up = "/auth/signup";
   static const String Sign_In = "/auth/signin";
   static const String Post_Location = "/location/add";
+  static const String Get_Location = "/location/all";
 }

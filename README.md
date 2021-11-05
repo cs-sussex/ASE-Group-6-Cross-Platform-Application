@@ -22,7 +22,9 @@ Add this to your additional arguments:
 --no-sound-null-safety
 ```
 
-If using vscode. create .vscode/launch.json in project root and add
+If using vscode. 
+I. run `flutter run --no-sound-null-safety`
+II. create .vscode/launch.json in project root and add
 
 ```
 "args": [

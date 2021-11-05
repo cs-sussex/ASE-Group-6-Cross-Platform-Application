@@ -18,7 +18,7 @@ abstract class RestClient {
   @POST(AppConstants.Sign_In)
   Future<LoginPOJO> loginUser(@Body() LoginPOJO loginPOJO);
 
-// get all location
+// save location
   @POST(AppConstants.Post_Location)
-  Future<LocationPOJO> getAllLocation(@Body() LocationPOJO locationPOJO);
+  Future<LocationPOJO> saveLocation(@Body() LocationPOJO locationPOJO);
 }

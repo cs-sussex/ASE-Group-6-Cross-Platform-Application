@@ -50,7 +50,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<LocationPOJO> getAllLocation(locationPOJO) async {
+  Future<LocationPOJO> saveLocation(locationPOJO) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
