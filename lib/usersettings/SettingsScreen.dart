@@ -16,6 +16,10 @@ const String routeName = "SettingsScreen";
 var dio = Dio()..options.baseUrl = AppConstants.BASE_URL;
 RestClient restApiClient = RestClient(dio);
 AppConstants appConstants = AppConstants();
+// ignore_for_file: file_names
+
+
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -40,7 +44,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -56,16 +59,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  // late LocationPOJO locationPOJO;
+  // late LocationPOJO locationResponse;
+  //
+  // Future locationUpdate(LocationPOJO locationPOJO) async {
+  //   restApiClient
+  //       .saveLocation(locationPOJO)
+  //       .then((LocationPOJO responses) async {
+  //     print("response is ${responses.userId.toString()}");
+  //     if (responses.toJson().isNotEmpty) {
+  //       locationPOJO = responses;
+  //       UserAuthSharedPreferences.instance
+  //           .setStringValue("user", responses.userId);
+  //       // UserAuthSharedPreferences.instance.setBoolValue("login", true);
+  //       UserAuthSharedPreferences.instance
+  //           .setStringValue("location_name", responses.location_name);
+  //       UserAuthSharedPreferences.instance
+  //           .setStringValue("colour", responses.colour);
+  //       print(locationPOJO.toJson().toString());
+  //       Navigator.of(context).push(
+  //           MaterialPageRoute(builder: (context) => const SettingsScreen()));
+  //     }
+  //   }).whenComplete(() {
+  //     debugPrint("complete:");
+  //   }).catchError((onError) {
+  //     // UserAuthFailedDialogBox(context, AppConstants.UserAuthFailed);
+  //     debugPrint("errors:${onError.toString()}");
+  //   });
+  // }
+
   Widget buildSettingsList() {
     return SizedBox(
         height: SizeConfig.heightMultiplier * 100,
         width: SizeConfig.widthMultiplier * 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-
-
-
-            children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               alignment: Alignment.center,
 
@@ -75,9 +102,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   elevation: 4,
                   child: Column(
                     children: [
+                      Text(
+                        "Here" + userName,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: SizeConfig.textMultiplier * 3),
+                      ),
+
                       Container(
                         color: Colors.white38,
-
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
@@ -95,8 +128,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           //  UserAuthSharedPreferences.instance.removeAll();
 
                             Navigator.of(context).push(MaterialPageRoute(
+
                                 builder: (_) => const AllLocationsState()));
                           },
+
                           child: Ink(
                             decoration: const BoxDecoration(),
                             child: Container(

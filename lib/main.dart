@@ -5,58 +5,31 @@ import 'package:mylocation/userauthentication/registration/screen/registrationSc
 import 'package:mylocation/usersettings/SettingsScreen.dart';
 import 'package:mylocation/util/localstorage/UserAuthSharedPreferences.dart';
 
-
-
 Future<void> main() async {
- WidgetsFlutterBinding.ensureInitialized();
- bool? loginFlag;
+  WidgetsFlutterBinding.ensureInitialized();
+  bool? loginFlag;
 
+  routePageDirection() async {
+    await UserAuthSharedPreferences.instance
+        .getBoolValue("login")
+        .then((value) {
+      loginFlag = value;
+    });
 
-
-
-
- routePageDirection() async{
-
-  await UserAuthSharedPreferences
-       .instance
-       .getBoolValue(
-       "login")
-       .then((value) {
-     loginFlag =
-         value;
-   });
-
-
-   if (loginFlag==null) {
-     UserAuthSharedPreferences
-         .instance
-         .getBoolValue(
-         "login")
-         .then((value) {
-       // setState(() {
-       loginFlag =
-           value;
-     });
-   }
-   else if(loginFlag!=null && loginFlag==true)
-     {
-
-       return const SettingsScreen();
-     }
-   else if(loginFlag==false)
-     {
-       return const LoginScreenStates();
-
-     }
-
-
-   }
+    if (loginFlag == null) {
+      UserAuthSharedPreferences.instance.getBoolValue("login").then((value) {
+        // setState(() {
+        loginFlag = value;
+      });
+    } else if (loginFlag != null && loginFlag == true) {
+      return const SettingsScreen();
+    } else if (loginFlag == false) {
+      return const LoginScreenStates();
+    }
+  }
 
 //}
-  runApp(
-
-      MaterialApp(
-      home:await routePageDirection(),
+  runApp(MaterialApp(home: LoginScreenStates(), //await routePageDirection(),
       routes: <String, WidgetBuilder>{
      'LoginScreenStates': (context) =>loginFlag==true? const SettingsScreen(): const LoginScreenStates(),
     'SettingsScreen':(context)=> loginFlag==true? const SettingsScreen(): const LoginScreenStates(),
@@ -65,5 +38,5 @@ Future<void> main() async {
   }
       ));
 
-}
 
+}
