@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mylocation/location/model/LocationScreen/AllLocationScreen.dart';
+import 'package:mylocation/showmylocation.dart';
 import 'package:mylocation/userauthentication/Login/screen/loginScreen.dart';
 import 'package:mylocation/userauthentication/registration/screen/registrationScreen.dart';
 import 'package:mylocation/usersettings/SettingsScreen.dart';
@@ -29,12 +30,13 @@ Future<void> main() async {
   }
 
 //}
-  runApp(MaterialApp(home: LoginScreenStates(), //await routePageDirection(),
+  runApp(MaterialApp(home: await routePageDirection(),
       routes: <String, WidgetBuilder>{
      'LoginScreenStates': (context) =>loginFlag==true? const SettingsScreen(): const LoginScreenStates(),
     'SettingsScreen':(context)=> loginFlag==true? const SettingsScreen(): const LoginScreenStates(),
      'RegistrationScreen':(context)=>const RegistrationScreen(),
-        "AllLocationsState":(context) =>const AllLocationsState()
+        'AllLocationsState':(context) =>const AllLocationsState(),
+        'ShowMyLocation':(context)=>const ShowMyLocation()
   }
       ));
 

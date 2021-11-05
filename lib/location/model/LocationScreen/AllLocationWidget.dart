@@ -29,7 +29,7 @@ Widget allLocationWidget(List<GetAllLocationPOJO> getAllLocationPOJO) {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                height: SizeConfig.heightMultiplier * 23,
+                               // height: SizeConfig.heightMultiplier * 23,
                                 width: SizeConfig.widthMultiplier * 90,
 
                                 child: Card(

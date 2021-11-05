@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mylocation/network/RestClient.dart';
+import 'package:mylocation/usersettings/SettingsScreen.dart';
 import 'package:mylocation/util/appconstants/AppConstants.dart';
 import 'package:dio/dio.dart';
 import 'package:mylocation/util/localstorage/UserAuthSharedPreferences.dart';
@@ -68,19 +69,50 @@ class _AllLocationsState extends State<AllLocationsState> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Container(
-                              height: SizeConfig.heightMultiplier * 8,
-                              width: SizeConfig.widthMultiplier * 90,
-                              padding: const EdgeInsets.all(10.0),
-                              child: const Text(
-                                "All Locations",
-                                textAlign: TextAlign.center,
-                                textScaleFactor: 1.5,
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
+                            SizedBox(
+                                width: SizeConfig.widthMultiplier * 100,
+
+                                child: Row(children: [
+
+
+                                  Container(
+                                    //height: 50,
+
+
+                                    padding: const EdgeInsets.all(5.0),
+                                    color: Colors.transparent,
+                                    width: 60,
+
+                                    child: FloatingActionButton(
+                                      child: const Icon(Icons.arrow_back_ios),
+                                      onPressed: ()
+                                      async {
+
+                                        Navigator.of(context).push(MaterialPageRoute(
+
+                                            builder: (_) => const SettingsScreen()));
+
+
+
+                                      },
+                                      heroTag: null,
+                                    ),
+                                  ),
+
+
+                                  Container(
+
+                                    height: SizeConfig.heightMultiplier * 7,
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: const Text(
+                                      "All Locations",
+                                      textAlign: TextAlign.center,
+                                      textScaleFactor: 1.3,
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ),])),
                             FutureBuilder(
                                 future: token.isNotEmpty
                                     ? restApiClient
@@ -111,7 +143,13 @@ class _AllLocationsState extends State<AllLocationsState> {
                                                 SizeConfig.heightMultiplier *
                                                     20,
                                             child:
-                                                const CircularProgressIndicator()));
+                                            const Text(
+                                              "No locations found :(",
+                                              textAlign: TextAlign.center,
+                                              textScaleFactor: 1.5,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),));
                                   } else {
                                     return Column(
                                       children: <Widget>[

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mylocation/location/UserSavedLocationList/screen/ListOfUserLocationsScreen.dart';
 import 'package:mylocation/location/model/GetAllLocationPOJO.dart';
 import 'package:mylocation/location/model/LocationScreen/AllLocationScreen.dart';
 import 'package:mylocation/network/RestClient.dart';
@@ -10,6 +11,7 @@ import 'package:mylocation/util/appconstants/AppConstants.dart';
 import 'package:mylocation/util/localstorage/UserAuthSharedPreferences.dart';
 import 'package:mylocation/util/ui/sizeConfig.dart';
 import 'package:dio/dio.dart' ;
+import '../showmylocation.dart';
 import '../userauthentication/Login/screen/loginScreen.dart';
 
 const String routeName = "SettingsScreen";
@@ -59,40 +61,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  // late LocationPOJO locationPOJO;
-  // late LocationPOJO locationResponse;
-  //
-  // Future locationUpdate(LocationPOJO locationPOJO) async {
-  //   restApiClient
-  //       .saveLocation(locationPOJO)
-  //       .then((LocationPOJO responses) async {
-  //     print("response is ${responses.userId.toString()}");
-  //     if (responses.toJson().isNotEmpty) {
-  //       locationPOJO = responses;
-  //       UserAuthSharedPreferences.instance
-  //           .setStringValue("user", responses.userId);
-  //       // UserAuthSharedPreferences.instance.setBoolValue("login", true);
-  //       UserAuthSharedPreferences.instance
-  //           .setStringValue("location_name", responses.location_name);
-  //       UserAuthSharedPreferences.instance
-  //           .setStringValue("colour", responses.colour);
-  //       print(locationPOJO.toJson().toString());
-  //       Navigator.of(context).push(
-  //           MaterialPageRoute(builder: (context) => const SettingsScreen()));
-  //     }
-  //   }).whenComplete(() {
-  //     debugPrint("complete:");
-  //   }).catchError((onError) {
-  //     // UserAuthFailedDialogBox(context, AppConstants.UserAuthFailed);
-  //     debugPrint("errors:${onError.toString()}");
-  //   });
-  // }
 
   Widget buildSettingsList() {
     return SizedBox(
         height: SizeConfig.heightMultiplier * 100,
         width: SizeConfig.widthMultiplier * 100,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child: Column( children: [
           Container(
               alignment: Alignment.center,
 
@@ -102,12 +76,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   elevation: 4,
                   child: Column(
                     children: [
+
+
+                      SizedBox(height: 10,),
                       Text(
-                        "Here" + userName,
+                        "Home",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: SizeConfig.textMultiplier * 3),
                       ),
+
+
+
+
+
 
                       Container(
                         color: Colors.white38,
@@ -117,19 +99,149 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          )),
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              )),
                           onPressed: () {
                             //UserAuthSharedPreferences.instance.removeValue("email");
-                            UserAuthSharedPreferences.instance
-                                .setBoolValue("login", false);
-                          //  UserAuthSharedPreferences.instance.removeAll();
 
                             Navigator.of(context).push(MaterialPageRoute(
 
                                 builder: (_) => const AllLocationsState()));
+                          },
+
+                          child: Ink(
+                            decoration: const BoxDecoration(),
+                            child: Container(
+                              padding: const EdgeInsets.all(18),
+                              constraints: BoxConstraints(
+                                minWidth: SizeConfig.widthMultiplier * 96,
+                              ),
+                              child: const Text(
+                                'All Location List',
+                                textAlign: TextAlign.center,
+                                textScaleFactor: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+
+
+
+
+
+
+
+
+
+                      Container(
+                        color: Colors.white38,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              )),
+                          onPressed: () {
+                            //UserAuthSharedPreferences.instance.removeValue("email");
+
+                            Navigator.of(context).push(MaterialPageRoute(
+
+                                builder: (_) => const ListOfUserLocationStates()));
+                          },
+
+                          child: Ink(
+                            decoration: const BoxDecoration(),
+                            child: Container(
+                              padding: const EdgeInsets.all(18),
+                              constraints: BoxConstraints(
+                                minWidth: SizeConfig.widthMultiplier * 96,
+                              ),
+                              child: const Text(
+                                'My Location List',
+                                textAlign: TextAlign.center,
+                                textScaleFactor: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+
+
+
+
+
+
+
+                      Container(
+                        color: Colors.white38,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              )),
+                          onPressed: () {
+                            //UserAuthSharedPreferences.instance.removeValue("email");
+
+                            Navigator.of(context).push(MaterialPageRoute(
+
+                                builder: (_) => const ShowMyLocation()));
+                          },
+
+                          child: Ink(
+                            decoration: const BoxDecoration(),
+                            child: Container(
+                              padding: const EdgeInsets.all(18),
+                              constraints: BoxConstraints(
+                                minWidth: SizeConfig.widthMultiplier * 96,
+                              ),
+                              child: const Text(
+                                'Save my Location',
+                                textAlign: TextAlign.center,
+                                textScaleFactor: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+
+
+
+                      Container(
+                        color: Colors.white38,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              )),
+                          onPressed: () {
+                            //UserAuthSharedPreferences.instance.removeValue("email");
+                            UserAuthSharedPreferences.instance
+                                .setBoolValue("login", false);
+                             UserAuthSharedPreferences.instance.removeAll();
+
+                            Navigator.of(context).push(MaterialPageRoute(
+
+                                builder: (_) => const LoginScreenStates()));
                           },
 
                           child: Ink(
@@ -148,6 +260,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                       ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     ],
                   )))
         ]));

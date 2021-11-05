@@ -50,6 +50,24 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<UserLocationPOJO> addUserLocation(auth, userLocationPOJO) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': auth};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(userLocationPOJO.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserLocationPOJO>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/location/add',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserLocationPOJO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<List<GetAllLocationPOJO>> getAllLocations(auth) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -67,6 +85,41 @@ class _RestClient implements RestClient {
             GetAllLocationPOJO.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
+  }
+
+  @override
+  Future<List<GetAllLocationPOJO>> getUserAllLocations(auth, id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': auth};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<GetAllLocationPOJO>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/location/findByUserId/$id',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) =>
+            GetAllLocationPOJO.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<void> deleteUserLocation(auth, id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': auth};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    await _dio.fetch<void>(_setStreamType<void>(
+        Options(method: 'DELETE', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/location/delete/$id',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    return null;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
