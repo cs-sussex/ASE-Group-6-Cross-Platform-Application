@@ -11,6 +11,7 @@ import 'package:geocoding/geocoding.dart';
 // import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'util/ConnectionStatusSingleton.dart';
+import 'package:mylocation/usersettings/SettingsScreen.dart';
 
 class MyLocation extends StatelessWidget {
   // static const routeName = '/PublisherDetailsState';
@@ -155,6 +156,28 @@ class _ShowMyLocationState extends State<ShowMyLocation> {
                           right: 10.0,
                           child: Row(
                             children: [
+                              // settings
+                              Container(
+                                //height: 50,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 100.0),
+                                padding: const EdgeInsets.all(5.0),
+                                color: Colors.transparent,
+
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.blueGrey[700],
+                                  child: const Icon(Icons.settings),
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                const SettingsScreen()));
+                                  },
+                                  heroTag: null,
+                                ),
+                                alignment: Alignment.bottomRight,
+                              ),
+
                               // save location button
                               Container(
                                 //height: 50,

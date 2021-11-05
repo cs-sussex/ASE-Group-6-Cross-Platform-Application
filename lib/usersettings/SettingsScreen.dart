@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:mylocation/showmylocation.dart';
 // import 'package:mylocation/util/appconstants/AppConstants.dart';
 import 'package:mylocation/util/localstorage/UserAuthSharedPreferences.dart';
 import 'package:mylocation/util/ui/sizeConfig.dart';
@@ -86,25 +87,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: Colors.black,
                             fontSize: SizeConfig.textMultiplier * 3),
                       ),
-                      //  child ElevatedButton (
-                      //             onPressed: () async {
-                      //             String? token = "";
-                      //             String? userID = "";
-
-                      //             loginPOJO = LoginPOJO(
-                      //                   emailIdController.text
-                      //                       .trim(),
-                      //                   passwordController
-                      //                       .text
-                      //                       .trim(),
-                      //                   token,
-                      //                   userID);
-
-                      //               signInUser(loginPOJO)
-                      //                   .then((value) {
-                      //                 loaderWidget();
-                      //               });
-                      //      }),
                       Container(
                         color: Colors.white38,
                         alignment: Alignment.center,
@@ -124,7 +106,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             UserAuthSharedPreferences.instance.removeAll();
 
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const LoginScreenStates()));
+                                builder: (_) => const ShowMyLocation()
+                                //LoginScreenStates()
+                                ));
                           }, // handle your onPressed code inside this function
 
                           child: Ink(
@@ -135,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 minWidth: SizeConfig.widthMultiplier * 96,
                               ),
                               child: const Text(
-                                'Logout',
+                                'SEE MAP',
                                 textAlign: TextAlign.center,
                                 textScaleFactor: 1.0,
                               ),
